@@ -10,6 +10,7 @@ import HomeScreen from './screens/HomeScreen';
 import MyNetwork from './screens/MyNetwork';
 import Notifications from './screens/Notifications';
 import ProfileScreen from './screens/ProfileScreen';
+import JourneyScreen from './screens/JourneyScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -27,6 +28,8 @@ function MainTabNavigator() {
             iconName = 'people';
           } else if (route.name === 'Notifications') {
             iconName = 'notifications';
+          } else if (route.name === 'Journey'){
+            iconName = 'subway';
           }
 
           return <Ionicons name={iconName} size={size} color={color} />;
@@ -42,6 +45,7 @@ function MainTabNavigator() {
       <Tab.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
       <Tab.Screen name="My Network" component={MyNetwork} options={{ headerShown: false }} />
       <Tab.Screen name="Notifications" component={Notifications} options={{ headerShown: false }}/>
+      <Tab.Screen name="Journey" component={JourneyScreen} options={{ headerShown: false }}/>
     </Tab.Navigator>
   );
 }
