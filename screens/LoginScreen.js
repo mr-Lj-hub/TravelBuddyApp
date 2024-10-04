@@ -1,13 +1,25 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { signInWithEmailAndPassword } from 'firebase/auth';  // Import the sign-in function
+import { auth } from '../firebase/firebaseconfig';  // Import Firebase auth
 
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
   const login = () => {
-    // You can add your authentication logic here
-    navigation.navigate('Home');
+    // Firebase authentication logic
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        console.log('Logged in with:', user.email);
+        navigation.navigate('Home');  // Navigate to home screen after successful login
+      })
+      .catch((error) => {
+        console.error(error);
+        setError('Failed to login. Please check your credentials.');
+      });
   };
 
   return (
@@ -30,22 +42,11 @@ export default function LoginScreen({ navigation }) {
         style={styles.input}
       />
 
-      <TouchableOpacity style={styles.loginButton} onPress={login}>
+        {error ? <Text style={styles.errorText}>{error}</Text> : null}
+
+        <TouchableOpacity style={styles.loginButton} onPress={login}>
         <Text style={styles.loginButtonText}>Login</Text>
       </TouchableOpacity>
-
-      <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
-        <Text style={styles.forgotPassword}>Forgot password?</Text>
-      </TouchableOpacity>
-
-      <View style={styles.socialButtonsContainer}>
-        <TouchableOpacity style={styles.socialButton}>
-          <Text style={styles.socialButtonText}>Google</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.socialButton}>
-          <Text style={styles.socialButtonText}>Facebook</Text>
-        </TouchableOpacity>
-      </View>
 
       <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
         <Text style={styles.signupText}>Don't have an account? <Text style={styles.signupLink}>Sign Up</Text></Text>
@@ -66,7 +67,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     alignSelf: 'center',
     marginBottom: 10,
-    color: '#F76C6A', // For the "Hello" header
+    color: '#F76C6A', 
   },
   welcomeText: {
     fontSize: 24,
@@ -93,26 +94,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
-  forgotPassword: {
-    color: '#F76C6A',
-    textAlign: 'center',
-    marginBottom: 20,
-  },
-  socialButtonsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginBottom: 20,
-  },
-  socialButton: {
-    backgroundColor: '#ddd',
-    borderRadius: 8,
-    padding: 15,
-    alignItems: 'center',
-    width: '40%',
-  },
-  socialButtonText: {
-    fontSize: 16,
-  },
   signupText: {
     textAlign: 'center',
     fontSize: 14,
@@ -121,4 +102,9 @@ const styles = StyleSheet.create({
     color: '#F76C6A',
     fontWeight: 'bold',
   },
+  errorText: {
+    color: 'red',
+    textAlign: 'center',
+    marginBottom: 10,
+  }
 });

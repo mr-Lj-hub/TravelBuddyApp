@@ -1,16 +1,44 @@
+// ProfileScreen.js
 import React from 'react';
-import { View, Text, Image } from 'react-native';
+import { View, Text, StyleSheet, Button } from 'react-native';
 
-export default function ProfileScreen() {
+const ProfileScreen = () => {
+  const user = {
+    name: 'John Doe',
+    email: 'johndoe@example.com',
+    bio: 'Travel enthusiast and photographer.',
+  };
+
   return (
-    <View style={{ padding: 20 }}>
-      <Text>Your Profile</Text>
-      <Image
-        source={{ uri: 'https://via.placeholder.com/100' }}
-        style={{ width: 100, height: 100 }}
-      />
-      <Text>Name: John Doe</Text>
-      <Text>Email: john.doe@example.com</Text>
+    <View style={styles.container}>
+      <Text style={styles.header}>{user.name}</Text>
+      <Text style={styles.email}>{user.email}</Text>
+      <Text style={styles.bio}>{user.bio}</Text>
+      <Button title="Edit Profile" onPress={() => console.log('Edit Profile')} />
     </View>
   );
-}
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: '#fff',
+  },
+  header: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  email: {
+    fontSize: 18,
+    color: 'gray',
+    marginBottom: 10,
+  },
+  bio: {
+    fontSize: 16,
+    marginBottom: 20,
+  },
+});
+
+export default ProfileScreen;
